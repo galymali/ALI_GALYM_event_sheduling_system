@@ -7,6 +7,9 @@ public class Main {
     Event event2 = new Event("tech meetup", "20.042025", "Astana");
     event2.printInfo();
 
+    Event event3 = new Event("tech event", "15.03.2025", "Astana");
+    event3.printInfo();
+
     Participant participant1 = new Participant("Ali", "Galymali08@mail.com");
     participant1.printInfo();
 
