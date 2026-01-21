@@ -1,22 +1,13 @@
-public class Participant {
-    private String name;
+public class Participant extends Person {
     private String email;
 
     public Participant(String name, String email) {
-        this.name=name;
-        this.email=email;
+        super(name);
+        this.email = email;
     }
-    public String getName() {
-        return name;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void printInfo() {
-        System.out.println("Participant: " + name + ", Email:" + email);
-    }
+
     @Override
-    public String toString() {
-        return "Participant{name'"+ name + ", email'" + email + "'}";
+    public void printInfo() {
+        System.out.println("[Participant] " + getName() + " | Email: " + email);
     }
 }

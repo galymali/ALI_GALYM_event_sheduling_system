@@ -1,34 +1,38 @@
+import java.util.Objects;
+
 public class Event {
     private String name;
     private String date;
     private String location;
 
-    public Event(String name, String date, String location ) {
+    public Event(String name, String date, String location) {
         this.name = name;
         this.date = date;
         this.location = location;
     }
-    public String getName() {
-        return name;
+
+    // getter and setter
+    public String getName() { return name; }
+    public String getDate() { return date; }
+    public String getLocation() { return location; }
+
+    @Override
+    public String toString() {
+        return String.format("Event: %-20s | Date: %-12s | Location: %s", name, date, location);
     }
-    public String getDate() {
-        return date;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(name, event.name) &&
+                Objects.equals(date, event.date) &&
+                Objects.equals(location, event.location);
     }
-    public String getLocation() {
-        return location;
-    }
-    public void setName(String name) {
-        this.name=name;
-    }
-    public void setDate(String date) {
-        this.date=date;
-    }
-    public void setLocation(String Location) {
-        this.location=location;
-    }
-    public void printInfo(){
-        System.out.println(
-                "Event: " + name + ", date: " + date + ", locatoin: " + location
-        );
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, date, location);
     }
 }

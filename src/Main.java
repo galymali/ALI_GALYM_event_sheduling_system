@@ -1,28 +1,45 @@
-//my subject area is #15 event scheduling system
+import java.util.*;
+
 public class Main {
-    public static void main(String[]args) {
-    Event event1 = new Event("tech conference", "15.03.2025", "Astana");
-    event1.printInfo();
+    public static void main(String[] args) {
+        // Data Pool
+        List<Event> events = new ArrayList<>();
+        events.add(new Event("Tech Conference", "2025-03-15", "Astana"));
+        events.add(new Event("Art Exhibition", "2025-05-20", "Almaty"));
+        events.add(new Event("Music Festival", "2025-03-15", "Astana"));
+        events.add(new Event("AI Workshop", "2025-02-10", "Shymkent"));
 
-    Event event2 = new Event("tech meetup", "20.042025", "Astana");
-    event2.printInfo();
+        System.out.println("--- All Events ---");
+        events.forEach(System.out::println);
 
-    Event event3 = new Event("tech event", "15.03.2025", "Astana");
-    event3.printInfo();
+        // 1. sorted by name
+        System.out.println("\n--- Sorted by Name ---");
+        events.sort(Comparator.comparing(Event::getName));
+        events.forEach(System.out::println);
 
-    Participant participant1 = new Participant("Ali", "Galymali08@mail.com");
-    participant1.printInfo();
+        // 2. filter - events in astana
+        System.out.println("\n--- Events in Astana ---");
+        for (Event e : events) {
+            if (e.getLocation().equalsIgnoreCase("Astana")) {
+                System.out.println(e);
+            }
+        }
 
-    Participant participant2 = new Participant("sabr", "KanatovSabr@mail.com");
-    participant2.printInfo();
+        // 3. search by name
+        String searchTarget = "AI Workshop";
+        System.out.println("\n--- Searching for: " + searchTarget + " ---");
+        for (Event e : events) {
+            if (e.getName().equalsIgnoreCase(searchTarget)) {
+                System.out.println("Found: " + e);
+            }
+        }
 
-    Organizer Organizer1 = new Organizer("IT Group", "+7 777 777 7777");
-    Organizer1.PrintInfo();
+        // Demonstration of inheritance and polymorphism
+        System.out.println("\n--- People Info ---");
+        Person p1 = new Participant("Ali", "ali@mail.com");
+        Person o1 = new Organizer("IT Group", "+7 777 777");
 
-    System.out.println("are event in same city? " +
-            event1.getLocation().equals(event2.getLocation()));
-
-    System.out.println("is it on same date? " +
-            event1.getDate().equals(event2.getDate()));
+        p1.printInfo();
+        o1.printInfo();
     }
 }
