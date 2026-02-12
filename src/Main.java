@@ -1,34 +1,38 @@
-// Удалили или закомментировали package main; если путь не совпадает
+package main;
+
+import io.javalin.Javalin;
 import controller.EventController;
 import controller.ParticipantController;
-import io.javalin.Javalin;
-import repository.IEventRepository;
-import repository.IParticipantRepository;
 import repository.PostgreEventRepository;
 import repository.PostgreParticipantRepository;
 
 public class Main {
     public static void main(String[] args) {
-        IEventRepository eventRepo = new PostgreEventRepository();
-        IParticipantRepository partRepo = new PostgreParticipantRepository();
+        // 1. Инициализация репозиториев
+        PostgreEventRepository eventRepo = new PostgreEventRepository();
+        PostgreParticipantRepository partRepo = new PostgreParticipantRepository();
 
+        // 2. Инициализация контроллеров
         EventController eventController = new EventController(eventRepo);
         ParticipantController partController = new ParticipantController(partRepo);
 
+        // 3. Настройка Javalin (Исправленный CORS для версии 6.x)
         Javalin app = Javalin.create(config -> {
             config.bundledPlugins.enableCors(cors -> {
-                cors.addRule(it -> it.anyHost());
+                cors.addRule(rule -> rule.anyHost()); // Исправленная строка
             });
         }).start(8080);
 
-        // События
-        app.get("/events", eventController::getAllEvents);
-        app.post("/events", eventController::createEvent);
+        // --- МАРШРУТЫ ДЛЯ СОБЫТИЙ (EVENTS) ---
+        app.get("/events", ctx -> eventController.getAllEvents(ctx));
+        app.post("/events", ctx -> eventController.createEvent(ctx));
+        app.delete("/events/{id}", ctx -> eventController.deleteEvent(ctx)); // Удаление ивента
 
-        // Участники - критически важно для кнопки!
-        app.get("/participants", partController::getAllParticipants);
-        app.post("/participants", partController::createParticipant);
+        // --- МАРШРУТЫ ДЛЯ УЧАСТНИКОВ (PARTICIPANTS) ---
+        app.get("/participants", ctx -> partController.getAllParticipants(ctx));
+        app.post("/participants", ctx -> partController.createParticipant(ctx));
+        app.delete("/participants/{id}", ctx -> partController.deleteParticipant(ctx)); // Удаление участника
 
-        System.out.println("🚀 Сервер готов!");
+        System.out.println("Server started on http://localhost:8080");
     }
 }

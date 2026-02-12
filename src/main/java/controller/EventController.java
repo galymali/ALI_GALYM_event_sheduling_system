@@ -12,24 +12,24 @@ public class EventController {
         this.repository = repository;
     }
 
-    // GET: Получить все события
     public void getAllEvents(Context ctx) {
-        List<Event> events = repository.getAllEvents();
+        List<Event> events = repository.getAll();
         ctx.json(events);
     }
 
-    // POST: Создать новое событие
-    // В EventController.java замени старый метод createEvent на этот:
     public void createEvent(Context ctx) {
+        Event event = ctx.bodyAsClass(Event.class);
+        repository.add(event);
+        ctx.status(201);
+    }
+
+    public void deleteEvent(Context ctx) {
         try {
-            Event newEvent = ctx.bodyAsClass(Event.class);
-
-            // Просто вызываем метод без проверки boolean
-            repository.addEvent(newEvent);
-
-            ctx.status(201).json(newEvent);
-        } catch (Exception e) {
-            ctx.status(400).result("Ошибка данных: " + e.getMessage());
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            repository.delete(id);
+            ctx.status(204);
+        } catch (NumberFormatException e) {
+            ctx.status(400).result("Invalid ID format");
         }
     }
 }
