@@ -1,4 +1,4 @@
-import java.util.Objects;
+package model;
 
 public abstract class Person {
     private String name;

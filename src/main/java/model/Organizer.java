@@ -1,3 +1,5 @@
+package model;
+
 public class Organizer extends Person {
     private String phone;
 
@@ -8,6 +10,6 @@ public class Organizer extends Person {
 
     @Override
     public void printInfo() {
-        System.out.println("[Organizer] " + getName() + " | Phone: " + phone);
+        System.out.println("[model.Organizer] " + getName() + " | Phone: " + phone);
     }
 }

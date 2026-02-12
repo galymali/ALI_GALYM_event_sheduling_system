@@ -1,38 +1,34 @@
-import java.util.*;
-import java.sql.SQLException;
+// Удалили или закомментировали package main; если путь не совпадает
+import controller.EventController;
+import controller.ParticipantController;
+import io.javalin.Javalin;
+import repository.IEventRepository;
+import repository.IParticipantRepository;
+import repository.PostgreEventRepository;
+import repository.PostgreParticipantRepository;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
-        // 1. Создаем список объектов вручную (Data Pool)
-        List<Event> events = new ArrayList<>();
-        events.add(new Event("Tech Conference", "2025-03-15", "Astana"));
-        events.add(new Event("Art Exhibition", "2025-05-20", "Almaty"));
-        events.add(new Event("Music Festival", "2025-03-15", "Astana"));
-        events.add(new Event("AI Workshop", "2025-02-10", "Shymkent"));
+    public static void main(String[] args) {
+        IEventRepository eventRepo = new PostgreEventRepository();
+        IParticipantRepository partRepo = new PostgreParticipantRepository();
 
-        System.out.println("--- All Local Events ---");
-        events.forEach(System.out::println);
+        EventController eventController = new EventController(eventRepo);
+        ParticipantController partController = new ParticipantController(partRepo);
 
-        // 2. Пример фильтрации (поиск в Астане)
-        System.out.println("\n--- Events in Astana ---");
-        for (Event e : events) {
-            if (e.getLocation().equalsIgnoreCase("Astana")) {
-                System.out.println(e);
-            }
-        }
+        Javalin app = Javalin.create(config -> {
+            config.bundledPlugins.enableCors(cors -> {
+                cors.addRule(it -> it.anyHost());
+            });
+        }).start(8080);
 
-        // 3. Демонстрация наследования (Person, Participant, Organizer)
-        System.out.println("\n--- People Info ---");
-        Person p1 = new Participant("Ali", "ali@mail.com");
-        Person o1 = new Organizer("IT Group", "+7 777 777 7777");
-        p1.printInfo();
-        o1.printInfo();
+        // События
+        app.get("/events", eventController::getAllEvents);
+        app.post("/events", eventController::createEvent);
 
-        // db operations
-        System.out.println("\n--- Database Operations ---");
+        // Участники - критически важно для кнопки!
+        app.get("/participants", partController::getAllParticipants);
+        app.post("/participants", partController::createParticipant);
 
-        db_conection.deleteAllEvents();
-        db_conection.addEvent("AITU Hackathon", "2025-04-12", "Astana");
-        db_conection.loadEventsFromDB();
+        System.out.println("🚀 Сервер готов!");
     }
 }
