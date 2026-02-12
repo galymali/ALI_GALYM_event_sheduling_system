@@ -38,14 +38,14 @@ Open `src/main/java/db/DatabaseManager.java` and update the database credentials
 2. The server will start on `http://localhost:8080`.
 3. Open `index.html` in any modern web browser.
 
-## 📂 Project Structure
+## Project Structure
 * `model/` — Core entities (Event and Participant).
 * `repository/` — Data Access Layer (PostgreParticipantRepository, IParticipantRepository).
 * `controller/` — Request handling logic.
 * `factory/` — Implementation of the Factory Pattern for object creation.
 * `index.html` — Minimalist "Premium Dark" user interface.
 
-## 📡 API Endpoints
+## API Endpoints
 * `GET /events` — Retrieve all events.
 * `POST /events` — Create a new event.
 * `GET /participants` — Retrieve all participants.
