@@ -44,7 +44,6 @@ public class PostgreEventRepository implements IEventRepository {
         }
     }
 
-    // РЕАЛИЗУЕМ МЕТОД, КОТОРЫЙ ТРЕБУЕТ ОШИБКА
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM events WHERE id = ?";

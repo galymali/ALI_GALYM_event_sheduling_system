@@ -6,17 +6,14 @@ public class Event {
     private String date;
     private String location;
 
-    // 1. ПУСТОЙ КОНСТРУКТОР (Нужен для Jackson/Сайта)
     public Event() {}
 
-    // 2. КОНСТРУКТОР С 3 ПАРАМЕТРАМИ (Нужен для EntityFactory)
     public Event(String name, String date, String location) {
         this.name = name;
         this.date = date;
         this.location = location;
     }
 
-    // 3. КОНСТРУКТОР С 4 ПАРАМЕТРАМИ (Нужен для репозитория/БД)
     public Event(int id, String name, String date, String location) {
         this.id = id;
         this.name = name;
@@ -24,7 +21,6 @@ public class Event {
         this.location = location;
     }
 
-    // ГЕТТЕРЫ И СЕТТЕРЫ (Обязательно все!)
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
